@@ -21,7 +21,7 @@ client.on('message', msg => {
     msg.channel.send(minutes);
     var amPM = parseThis.includes("AM")? "AM": "PM"
     msg.channel.send(amPM);
-    var timeZone = parseThis.substr(parseThis.length-4, 3).trim();
+    var timeZone = parseThis.substr(parseThis.length-4, 4).trim();
     msg.channel.send(timeZone);
   } else if (msg.content == `${prefix}help`){
     msg.channel.send("Hello friend!");
