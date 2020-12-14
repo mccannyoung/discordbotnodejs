@@ -1,17 +1,26 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-console.log(`using token: ${process.env.discordbot}`);
+
+const {prefix} = require('./config.json');
+
 const client = new Discord.Client();
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  console.log('using token: ${process.env.discordbot}');
 });
 
 client.on('message', msg => {
-  if (msg.content === 'ping') {
+  if (msg.content === `${prefix}ping`) {
     msg.channel.send('pong');
+  } else if (msg.content.startsWith(`${prefix}when `)){
+    var parseThis = msg.content.replace(`${prefix}when `,``);
+
+  } else if (msg.content == `${prefix}help`){
+    msg.channel.send("Hello friend!");
+    msg.channel.send(`To allow me to better assist you please use "${prefix}when " followed by the time you want to know how long until`);
+    msg.channel.send(`So if you want to know when is noon MST, type ${prefix}when 12:00PM MST`);
   }
+
 });
 
 client.login(process.env.discordbot);
