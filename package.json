@@ -1,12 +1,12 @@
 {
-    
-"dependencies": {
-    
-    
-"discord.js": "^12.5.1",
-    
-    
-"dotenv": "^8.2.0"
-    
-}
+    "name": "discordtimeBot",
+    "version": "0.1b",
+    "description": "I'm trying to figure out what I'm doing",
+    "main": "test.js",
+    "author": "ramy",
+    "license": "MIT",
+    "dependencies": {
+        "discord.js": "^12.5.1",
+        "dotenv": "^8.2.0"
+    }
 }
