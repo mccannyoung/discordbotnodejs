@@ -8,7 +8,7 @@ const client = new Discord.Client();
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   client.user.setActivity("the clock", {type: 'WATCHING'});
-  client.users.cache.get('RAMY#2032').send("I'm ready!");
+  client.users.cache.get('439927131267530752').send("I'm ready!");
 });
 
 client.on('message', msg => {
