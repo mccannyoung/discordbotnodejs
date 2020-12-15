@@ -13,7 +13,7 @@ client.on('ready', () => {
 client.on('message', msg => {
   if (msg.content === `${prefix}ping`) {
     msg.channel.send('pong');
-    msg.user.send('pong!');
+    msg.author.send('pong!');
   } else if (msg.content.startsWith(`${prefix}when `)){
     var parseThis = msg.content.replace(`${prefix}when `,``).toUpperCase().trim();
     if(parseThis.includes('-')||parseThis.includes('/')){
