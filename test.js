@@ -7,13 +7,21 @@ const client = new Discord.Client();
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  client.user.setActivity("the clock", {type: 'WATCHING'});
 });
 
 client.on('message', msg => {
   if (msg.content === `${prefix}ping`) {
     msg.channel.send('pong');
+    msg.user.send('pong!');
   } else if (msg.content.startsWith(`${prefix}when `)){
     var parseThis = msg.content.replace(`${prefix}when `,``).toUpperCase().trim();
+    if(parseThis.includes('-')||parseThis.includes('/')){
+      msg.channel.send("there is a date");
+    } else {
+      msg.channel.send("there is no date");
+    }
+
     msg.channel.send(parseThis);
     var hour = parseThis.substr(0, parseThis.indexOf(':'));
     msg.channel.send(hour);
@@ -29,6 +37,8 @@ client.on('message', msg => {
     msg.channel.send(`So if you want to know when is noon MST, type ${prefix}when 12:00PM MST`);
   }
 });
+
+
 
 client.login(process.env.discordbot);
 
