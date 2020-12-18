@@ -63,6 +63,13 @@ client.on('message', msg => {
     msg.channel.send(amPM);
     var timeZone = parseThis.substr(parseThis.length-4, 4).trim();
     msg.channel.send(timeZone);
+    if(amPM === 'PM' && hour !== '12') {
+      hour = hour + 12;
+      msg.channel.send(hour);
+    }
+    var time = convertTime2UTC(hour+":"+minutes+ timeZones);
+    var howLong = time = Date.now();
+    msg.channel.send(howLong);
   } else if (msg.content == `${prefix}help`){
     msg.channel.send("Hello friend!");
     msg.channel.send(`To allow me to better assist you please use "${prefix}when " followed by the time you want to know how long until`);
@@ -71,7 +78,13 @@ client.on('message', msg => {
   }
 });
 
+function convertTime2UTC(timeStr) {
+  var time = new Date.now();
+  var now = new Date.now();
 
+  time = new Date(`${now.year}-${now.month}-${now.day}T`)
+  return now;
+}
 
 client.login(process.env.discordbot);
 
