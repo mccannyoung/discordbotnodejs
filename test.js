@@ -75,7 +75,7 @@ client.on('message', msg => {
 
 client.login(process.env.discordbot);
 
-printTimeZones(){
+function printTimeZones() {
   var timeZoneList = '';
   for (const [key, value] of Object.entries(timeZones)) {
     timeZoneList += `${key}:  ${value.name} UTC ${value.offset}
