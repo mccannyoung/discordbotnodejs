@@ -1,14 +1,45 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-
+var timeZones = new Map();
 const {prefix} = require('./config.json');
 
 const client = new Discord.Client();
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  //console.log(`Logged in as ${client.user.tag}!`);
   client.user.setActivity("the clock", {type: 'WATCHING'});
-  client.users.get('439927131267530752').send("I'm ready!");
+  //NORAM time zones
+  timeZones["AST"] = { offset: -4, name: 'Atlantic Standard Time'};
+  timeZones["ADT"] = { offset: -3, name: 'Atlantic Daylight Time'};
+  timeZones["EST"] = { offset: -5, name: 'Eastern Standard Time'};
+  timeZones["EDT"] = { offset: -4, name: 'Eastern Daylight Time'};
+  timeZones["CST"] = { offset: -6, name: 'Central Standard Time'};
+  timeZones["CDT"] = { offset: -5, name: 'Central Daylight Time'};
+  timeZones["MST"] = { offset: -7, name: 'Mountain Standard Time'};
+  timeZones["MDT"] = { offset: -6, name: 'Mountain Daylight Time'};
+  timeZones["PST"]  ={ offset:  -8, name: 'Pacific Standard Time'};
+  timeZones["PDT"] = { offset: -7, name: 'Pacific Daylight Time'};
+  timeZones["AKST"] = { offset: -9, name: 'Alaska Standard Time'};
+  timeZones["AKDT"] = { offset: -8, name: 'Alaska Daylight Time'};
+  timeZones["HST"] = { offset: -10, name: 'Hawaii Standard Time'};
+  // AU time zones
+  timeZones["AWT"] = { offset:8, name: 'Australia Western Standard Time'};
+  timeZones["AWST"] = { offset:9, name: 'Australia Western Summer Time'};
+  timeZones["ACST"] = { offset:9.5, name: 'Australia Central Summer Time'};
+  timeZones["ACT"] = { offset:10.5, name: 'Australia Central Standard Time'};
+  timeZones["AEST"] = { offset:10, name: 'Australia Eastern Summer Time'};;
+  timeZones["AET"] = { offset:11, name: 'Australia Eastern Standard Time'};
+  // EME
+  timeZones["GMT"] = { offset:0, name:'Greenwich Mean Time' };
+  timeZones["BST"] = { offset:1, name: 'British Summer Time' };
+  timeZones["CET"] = { offset:1, name: 'Central European Time' };
+  timeZones["CEST"] = { offset:2, name: 'Central European Summer Time' };
+  timeZones["EET"] = { offset:2, name: 'Eastern European Time' };
+  timeZones["EEST"]= { offset:3, name: 'Eastern European Summer Time'};
+  timeZones["C"] = { offset:3, name: 'Charlie Time (Middle East)'};
+  timeZones["D"] = { offset:4, name: 'Delta Time (Middle East)'};
+
+  channel.send('Discord bot ready');
 });
 
 client.on('message', msg => {
@@ -24,7 +55,7 @@ client.on('message', msg => {
     }
 
     msg.channel.send(parseThis);
-    var hour = parseThis.substr(0, parseThis.indexOf(':'));
+    var hour = parseThis.substr(parseThis.indexOf(':')-2, parseThis.indexOf(':'));
     msg.channel.send(hour);
     var minutes = parseThis.substr(parseThis.indexOf(':')+1, 2);
     msg.channel.send(minutes);
@@ -35,7 +66,8 @@ client.on('message', msg => {
   } else if (msg.content == `${prefix}help`){
     msg.channel.send("Hello friend!");
     msg.channel.send(`To allow me to better assist you please use "${prefix}when " followed by the time you want to know how long until`);
-    msg.channel.send(`So if you want to know when is noon MST, type ${prefix}when 12:00PM MST`);
+    msg.channel.send('Here is a list of the available timezones '+ printTimeZones());
+    //msg.channel.send(`If you want to know how much longer until an event is on January 1st 2025 1 pm MST, type ${prefix}when 01/01/2025 1:00PM MST`);
   }
 });
 
@@ -43,3 +75,13 @@ client.on('message', msg => {
 
 client.login(process.env.discordbot);
 
+printTimeZones(){
+  var timeZoneList = '';
+  for (const [key, value] of Object.entries(timeZones)) {
+    timeZoneList += `${key}:  ${value.name} UTC ${value.offset}
+    `;
+  }
+
+  return timeZoneList;
+
+}
