@@ -48,63 +48,24 @@ client.on('message', msg => {
     msg.author.send('pong!');
   } else if (msg.content.startsWith(`${prefix}when `)){
     var parseThis = msg.content.replace(`${prefix}when `,``).toUpperCase().trim();
-    if(parseThis.includes('-')||parseThis.includes('/')){
-      msg.channel.send("there is a date");
-    } else {
-      msg.channel.send("there is no date");
-    }
+    // if(parseThis.includes('-')||parseThis.includes('/')){
+    //   msg.channel.send("there is a date");
+    // } else {
+    //   msg.channel.send("there is no date");
+    // } // I will add this later 
 
-    // msg.channel.send(parseThis);
-    // var  = parseThis.substr(0, parseThis.indexOf(':'));
-    // msg.channel.send("hour" + hour);
-    // var minutes = parseThis.substr(parseThis.indexOf(':')+1, 2);
-    // msg.channel.send("minutes" + minutes);
-    // var amPM = parseThis.includes("AM")? "AM": "PM"
-    // msg.channel.send(amPM);
-    //var timeZone = parseThis.substr(parseThis.length-4, 4).trim();
     var timeZone = findTimeZone(parseThis);
-    //console.log("returned TZ = "+ timeZone);
-    //msg.channel.send("What timezone? " + timeZone);
-    // if(amPM === 'PM' && hour !== '12') {
-    //   hour = hour + 12;
-    //   msg.channel.send("new hour" + hour);
-    // }
     parseThis = parseThis.replace(timeZone, '').trim();
-    //console.log("time without timezone: " + parseThis);
-
-    // var d = new Date();
-    // var time = parseThis.match( /(\d+)(?::(\d\d))?\s*(P?)/ );
-    // console.log("time array: "+ time.toString());
-    // console.log(`${time[1]} + (${time[3]} ? 12:0)`);
-    // d.setHours( parseInt( time[1], 10) + (time[3] ? 12 : 0) );
-    // console.log("hours? " + d.getHours());
-    // d.setMinutes( parseInt( time[2]) || 0 );
-    // console.log("minutes? " + d.getMinutes());
     var inputTime = parseTime(parseThis);
-    //var inputTime = d;
-    //console.log("date object made " + inputTime);
-    //msg.channel.send(inputTime);
     var time = convertTime2UTC(inputTime.getHours(),inputTime.getMinutes(),timeZone);
-    msg.channel.send("UTC time: "+ time);
     var currentTime = new Date();
     var seconds = (time.getTime() - currentTime.getTime()) / 1000;
-    console.log(" the difference is " + seconds);
-    
-    msg.channel.send("It will be that time in "+ seconds.toString());
-    msg.channel.send("let's see how this looks " + new Date(seconds * 1000).toISOString().substr(11, 8))
     rHours = Math.floor(seconds / 3600);
     seconds %= 3600;
     rMinutes = Math.floor(seconds / 60);
     rSeconds = Math.round(seconds % 60);
-    msg.channel.send("or " + rHours + " hours "+ rMinutes + " minutes and "+ rSeconds + " seconds");
-    if (seconds < 0){
-      seconds = Math.abs(seconds);
-      rHours = Math.floor(seconds / 3600);
-    seconds %= 3600;
-    rMinutes = Math.floor(seconds / 60);
-    rSeconds = Math.round(seconds % 60);
-    msg.channel.send("or " + rHours + " hours "+ rMinutes + " minutes and "+ rSeconds + " seconds ago");
-    }
+    msg.channel.send(`It will be ${msg.content.replace(`${prefix}when `,``).toUpperCase().trim()} in ${rHours} hours, ${rMinutes} minutes and ${rSeconds} seconds`);
+
   } else if (msg.content == `${prefix}help`){
     msg.channel.send("Hello friend!");
     msg.channel.send(`To allow me to better assist you please use "${prefix}when " followed by the time you want to know how long until`);
