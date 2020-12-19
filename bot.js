@@ -81,7 +81,7 @@ client.on('message', msg => {
     msg.channel.send("Hello friend!");
     msg.channel.send(`To allow me to better assist you please use "${prefix}when " followed by the time you want to know how long until`);
     msg.channel.send('For example if you want to know how much longer until 2 pm MST, type in $when 2:00 MST');
-    msg.channel.send('Here is a list of the available timezones:\n '+ printTimeZones());
+    msg.channel.send('Here is a list of the available timezones:\n  '+ printTimeZones());
   } else if (msg.content.startsWith(`${prefix}`)){
     msg.channel.send("I'm sorry, I don't understand what you're looking for. Try $help for instructions");
   }
