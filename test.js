@@ -29,17 +29,14 @@ client.on('ready', () => {
   timeZones["ACT"] = { offset:10.5, name: 'Australia Central Standard Time'};
   timeZones["AEST"] = { offset:10, name: 'Australia Eastern Summer Time'};;
   timeZones["AET"] = { offset:11, name: 'Australia Eastern Standard Time'};
-  // EME
+  // EU
   timeZones["GMT"] = { offset:0, name:'Greenwich Mean Time' };
   timeZones["BST"] = { offset:1, name: 'British Summer Time' };
   timeZones["CET"] = { offset:1, name: 'Central European Time' };
   timeZones["CEST"] = { offset:2, name: 'Central European Summer Time' };
   timeZones["EET"] = { offset:2, name: 'Eastern European Time' };
   timeZones["EEST"]= { offset:3, name: 'Eastern European Summer Time'};
-  timeZones["C"] = { offset:3, name: 'Charlie Time (Middle East)'};
-  timeZones["D"] = { offset:4, name: 'Delta Time (Middle East)'};
-
-  //channel.send('Discord bot ready');
+  
 });
 
 client.on('message', msg => {
@@ -55,15 +52,29 @@ client.on('message', msg => {
     // } // I will add this later 
 
     var timeZone = findTimeZone(parseThis);
+    if (timeZone.length == 0) {
+      msg.channel.send("I'm sorry, I couldn't figure out what time you're asking about, please see $help for expected inputs");
+      return;
+    }
+
     parseThis = parseThis.replace(timeZone, '').trim();
     var inputTime = parseTime(parseThis);
+
+    if (inputTime.getSeconds()!=0)
+    {
+      msg.channel.send("I'm sorry, I couldn't figure out what time you're asking about, please see $help for expected inputs");
+      return;
+    }
+
     var time = convertTime2UTC(inputTime.getHours(),inputTime.getMinutes(),timeZone);
     var currentTime = new Date();
+    
     var seconds = (time.getTime() - currentTime.getTime()) / 1000;
     rHours = Math.floor(seconds / 3600);
     seconds %= 3600;
     rMinutes = Math.floor(seconds / 60);
     rSeconds = Math.round(seconds % 60);
+    
     msg.channel.send(`It will be ${msg.content.replace(`${prefix}when `,``).toUpperCase().trim()} in ${rHours} hours, ${rMinutes} minutes and ${rSeconds} seconds`);
 
   } else if (msg.content == `${prefix}help`){
@@ -71,7 +82,6 @@ client.on('message', msg => {
     msg.channel.send(`To allow me to better assist you please use "${prefix}when " followed by the time you want to know how long until`);
     msg.channel.send('For example if you want to know how much longer until 2 pm MST, type in $when 2:00 MST');
     msg.channel.send('Here is a list of the available timezones:\n'+ printTimeZones());
-    //msg.channel.send(`If you want to know how much longer until an event is on January 1st 2025 1 pm MST, type ${prefix}when 01/01/2025 1:00PM MST`);
   } else if (msg.content.startsWith(`${prefix}`)){
     msg.channel.send("I'm sorry, I don't understand what you're looking for. Try $help for instructions");
   }
@@ -79,9 +89,13 @@ client.on('message', msg => {
 
 function parseTime( t ) {
   var d = new Date();
+  try{
   var time = t.match( /(\d+)(?::(\d\d))?\s*(P?)/ );
   d.setHours( parseInt( time[1], 10) + (time[3] ? 12 : 0) );
-  d.setMinutes( parseInt( time[2]) || 0 );
+  d.setMinutes( parseInt( time[2]) || 0 );}
+  catch(err){
+    d = new Date();
+  }
   return d;
 }
 
