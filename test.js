@@ -92,7 +92,6 @@ function findTimeZone(s) {
       // pick the longest one that is matched. 
       if (zone.length < key.length){
         zone = key;
-        console.log("Found time zone! "+ key);
       }
     }
   }
@@ -102,12 +101,9 @@ function findTimeZone(s) {
 function convertTime2UTC(hours,minutes, timeZone) {
   var now = new Date();
   var zone = timeZones[timeZone];
-  console.log("is this a timezone obj? " + zone);
   if (zone === null || zone.offset === null) {
     return now;
   }
-  console.log("timezone: " + timeZone.toString());
-  //var offset = timeZones[timeZone].offset;
   var offset = parseInt(zone.offset);
   var offsetType = "-";
   if (offset >= 0)
@@ -118,9 +114,8 @@ function convertTime2UTC(hours,minutes, timeZone) {
     offset = offset-0.5;
     offsetMinutes="30";
   }
-  console.log(`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}T${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}:00.000${offsetType}${("0"+offset).slice(-2)}:${offsetMinutes}`);
   var time = new Date(`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}T${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}:00.000${offsetType}${("0"+offset).slice(-2)}:${offsetMinutes}`);
-  console.log(`Going to return ${time}`);
+
   if((time.getTime() - now.getTime()) < 0){
     time.setDate(now.getDate() + 1);
   }
