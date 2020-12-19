@@ -9,6 +9,6 @@
         "dotenv": "^8.2.0"
     },
     "scripts": {
-        "start": "test.js"
+        "start": "bot.js"
     }
 }
